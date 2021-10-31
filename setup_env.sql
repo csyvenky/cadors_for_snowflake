@@ -1,0 +1,73 @@
+----------------------------------------
+-- (0) DROP ALL OBJECTS
+----------------------------------------
+USE ROLE SYSADMIN;
+DROP DATABASE IF EXISTS "CADORS";
+DROP WAREHOUSE IF EXISTS "WAREHOUSE_CADORS";
+
+USE ROLE SECURITYADMIN;
+DROP ROLE IF EXISTS "ROLE_CADORS";
+DROP USER IF EXISTS "USER_CADORS";
+
+
+----------------------------------------
+-- (1) CREATE DATABASE
+----------------------------------------
+USE ROLE SYSADMIN;
+CREATE DATABASE CADORS COMMENT = "Transport Canada CADORS data.";
+-- Access to this database is strictly permissioned.
+
+
+----------------------------------------
+-- (2) CREATE WAREHOUSE
+----------------------------------------
+CREATE WAREHOUSE WAREHOUSE_CADORS
+WITH WAREHOUSE_SIZE = 'XSMALL'
+WAREHOUSE_TYPE = 'STANDARD'
+AUTO_SUSPEND = 60
+AUTO_RESUME = TRUE
+INITIALLY_SUSPENDED = TRUE;
+COMMENT = "Compute warehouse for CADORS.";
+
+
+----------------------------------------
+-- (3) CREATE ROLE AND GRANT PRIVILEGES
+----------------------------------------
+USE ROLE SECURITYADMIN;
+-- https://docs.snowflake.com/en/user-guide/security-access-control-considerations.html
+
+CREATE ROLE ROLE_CADORS
+
+GRANT ALL PRIVILEGES ON WAREHOUSE WAREHOUSE_CADORS TO ROLE_CADORS;
+-- assign warehouse privileges
+
+GRANT CREATE SCHEMA, MODIFY, MONITOR, USAGE ON DATABASE CADORS TO ROLE_CADORS;
+GRANT USAGE ON DATABASE CADORS TO ROLE_CADORS;
+GRANT USAGE ON FUTURE SCHEMAS IN DATABASE CADORS TO ROLE_CADORS;
+GRANT SELECT ON FUTURE TABLES IN DATABASE CADORS TO ROLE_CADORS;
+GRANT SELECT ON FUTURE VIEWS IN DATABASE CADORS TO ROLE_CADORS;
+GRANT USAGE ON FUTURE FUNCTIONS IN DATABASE CADORS TO ROLE_CADORS;
+-- assign CADORS database privileges to ROLE_CADORS
+
+
+----------------------------------------
+-- (4) CREATE USER
+----------------------------------------
+CREATE USER USER_CADORS
+  MUST_CHANGE_PASSWORD = TRUE
+  DEFAULT_ROLE = ROLE_CADORS
+  DEFAULT_WAREHOUSE = WAREHOUSE_CADORS
+  PASSWORD = 'PASSWORD'; 
+GRANT ROLE ROLE_CADORS TO USER USER_CADORS;
+
+
+----------------------------------------
+-- (5) VALIDATE THE CONFIGURATION
+----------------------------------------
+USE ROLE SYSADMIN;
+SHOW DATABASES;
+
+USE ROLE SECURITYADMIN;
+SHOW ROLES;
+SHOW GRANTS TO ROLE ROLE_CADORS;
+SHOW GRANTS OF ROLE ROLE_CADORS;
