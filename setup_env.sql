@@ -12,6 +12,9 @@ DROP USER IF EXISTS "USER_CADORS";
 
 ----------------------------------------
 -- (1) CREATE DATABASE
+-- https://docs.snowflake.com/en/sql-reference/sql/create-database.html
+-- https://docs.snowflake.com/en/sql-reference/sql/create-table.html
+-- https://docs.snowflake.com/en/sql-reference/sql/create-file-format.html
 ----------------------------------------
 USE ROLE SYSADMIN;
 CREATE DATABASE CADORS COMMENT = "Transport Canada CADORS data.";
@@ -29,6 +32,7 @@ CREATE FILE FORMAT "CADORS"."PUBLIC"."CADORS_XML_DATA"
 
 ----------------------------------------
 -- (2) CREATE WAREHOUSE
+-- https://docs.snowflake.com/en/sql-reference/sql/create-warehouse.html
 ----------------------------------------
 CREATE WAREHOUSE WAREHOUSE_CADORS
 WITH WAREHOUSE_SIZE = 'XSMALL'
@@ -42,6 +46,7 @@ COMMENT = "Compute warehouse for CADORS.";
 ----------------------------------------
 -- (3) CREATE ROLE AND GRANT PRIVILEGES
 -- https://docs.snowflake.com/en/user-guide/security-access-control-considerations.html
+-- https://docs.snowflake.com/en/sql-reference/sql/grant-privilege.html
 ----------------------------------------
 USE ROLE SECURITYADMIN;
 CREATE ROLE ROLE_CADORS;
@@ -56,6 +61,7 @@ GRANT USAGE ON FUTURE FUNCTIONS IN DATABASE CADORS TO ROLE_CADORS;
 
 ----------------------------------------
 -- (4) CREATE USER
+-- https://docs.snowflake.com/en/sql-reference/sql/create-user.html
 ----------------------------------------
 CREATE USER USER_CADORS
   MUST_CHANGE_PASSWORD = TRUE
@@ -67,6 +73,7 @@ GRANT ROLE ROLE_CADORS TO USER USER_CADORS;
 
 ----------------------------------------
 -- (5) VALIDATE THE CONFIGURATION
+-- https://docs.snowflake.com/en/sql-reference/sql/show.html
 ----------------------------------------
 USE ROLE SYSADMIN;
 SHOW DATABASES LIKE 'CADORS';

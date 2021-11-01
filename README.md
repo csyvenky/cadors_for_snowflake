@@ -18,6 +18,6 @@ password = <the updated password>
 ```
 # Connect with CLI
 snowsql --dbname CADORS --config $env:USERPROFILE\.snowsql\config
-PUT file://C:\temp\2020Q4\*.xml @"PUBLIC"."STAGE_CADORS_XML";
+PUT file://C:\temp\2020Q4\*.xml @"PUBLIC"."STAGE_CADORS_XML"; # https://docs.snowflake.com/en/sql-reference/sql/put.html
 !exit
 ```
