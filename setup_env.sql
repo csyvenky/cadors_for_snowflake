@@ -67,3 +67,12 @@ SHOW ROLES LIKE 'ROLE_CADORS';
 SHOW GRANTS TO ROLE ROLE_CADORS;
 SHOW GRANTS OF ROLE ROLE_CADORS;
 SHOW USERS LIKE 'USER_CADORS';
+
+
+----------------------------------------
+-- (6) CREATE INTERNAL STAGE
+----------------------------------------
+CREATE STAGE IF NOT EXISTS STAGE_CADORS_XML
+  FILE_FORMAT = ( TYPE = XML )
+  COPY_OPTIONS = ( ON_ERROR = SKIP_FILE )
+  COMMENT = 'Internal stage for CADORS XML data files.'
