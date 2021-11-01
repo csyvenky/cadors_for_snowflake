@@ -15,7 +15,17 @@ DROP USER IF EXISTS "USER_CADORS";
 ----------------------------------------
 USE ROLE SYSADMIN;
 CREATE DATABASE CADORS COMMENT = "Transport Canada CADORS data.";
+CREATE TABLE "CADORS"."PUBLIC"."XML_DATA" ("XML_SRC" VARIANT);
 
+USE CADORS;
+CREATE FILE FORMAT "CADORS"."PUBLIC"."CADORS_XML_DATA" 
+  TYPE = 'XML' 
+  COMPRESSION = 'AUTO' 
+  PRESERVE_SPACE = FALSE 
+  STRIP_OUTER_ELEMENT = TRUE 
+  DISABLE_SNOWFLAKE_DATA = FALSE 
+  DISABLE_AUTO_CONVERT = FALSE 
+  IGNORE_UTF8_ERRORS = FALSE;
 
 ----------------------------------------
 -- (2) CREATE WAREHOUSE
@@ -71,8 +81,10 @@ SHOW USERS LIKE 'USER_CADORS';
 
 ----------------------------------------
 -- (6) CREATE INTERNAL STAGE
+-- https://docs.snowflake.com/en/sql-reference/sql/create-stage.html
 ----------------------------------------
+USE ROLE SYSADMIN;
 CREATE STAGE IF NOT EXISTS STAGE_CADORS_XML
-  FILE_FORMAT = ( TYPE = XML )
+  FILE_FORMAT = ( FORMAT_NAME  = 'CADORS_XML_DATA' )
   COPY_OPTIONS = ( ON_ERROR = SKIP_FILE )
   COMMENT = 'Internal stage for CADORS XML data files.'
