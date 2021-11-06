@@ -6,9 +6,9 @@
 5. Execute the 'load_data.sql' script.
 
 ### Additional Requirements
-The SnowSQL command line application.
+- The SnowSQL command line application.
 
-## OS X
+## OS X:
 Create ~/.snowsql/config file:
 ```
 accountname = <account.region.cloudname>
@@ -16,12 +16,14 @@ username = USER_CADORS
 password = <the updated password>
 ```
 
-### Connect with CLI
+### Connect with CLI:
 ```
-snowsql --dbname CADORS --config ~/.snowsql/.snowsql/config
+snowsql --dbname CADORS --config ~/.snowsql/config
 ```
 
-## Windows
+---
+
+## Windows:
 Create $env:USERPROFILE\.snowsql\config file:
 ```
 accountname = <account.region.cloudname>
@@ -29,14 +31,17 @@ username = USER_CADORS
 password = <the updated password>
 ```
 
-### Connect with CLI
+### Connect with CLI:
 ```
-snowsql --dbname CADORS --config ~/.snowsql/.snowsql/config
+snowsql --dbname CADORS --config $env:USERPROFILE\.snowsql\config
 ```
 
+---
+
+## In Snowflake session:
 ### Upload XML Data Files (to internal stage)
 ```
 # https://docs.snowflake.com/en/sql-reference/sql/put.html
-PUT $$file://<source_to_raw_cadors_xml>\*.xml$$ @"PUBLIC"."STAGE_CADORS_XML"; 
+PUT $$file://<source_to_raw_cadors_xml>*.xml$$ @"PUBLIC"."STAGE_CADORS_XML"; 
 !exit
 ```
