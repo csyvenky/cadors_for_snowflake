@@ -1,5 +1,4 @@
-# cadors_for_snowflake
-
+# CADORS for Snowflake SaaS
 1. Sign into the Snowflake portal with SYSADMIN role.
 2. Execute the 'setup_env.sql' script.
 3. In another browser logon as 'USER_CADORS | PASSWORD' and reset the password.
@@ -9,18 +8,35 @@
 ### Additional Requirements
 The SnowSQL command line application.
 
-Create $env:USERPROFILE\.snowsql\config file:
+## OS X
+Create ~/.snowsql/config file:
 ```
-accountname = <account.region.cloud>
+accountname = <account.region.cloudname>
 username = USER_CADORS
 password = <the updated password>
 ```
 
+### Connect with CLI
+```
+snowsql --dbname CADORS --config ~/.snowsql/.snowsql/config
+```
+
+## Windows
+Create $env:USERPROFILE\.snowsql\config file:
+```
+accountname = <account.region.cloudname>
+username = USER_CADORS
+password = <the updated password>
+```
+
+### Connect with CLI
+```
+snowsql --dbname CADORS --config ~/.snowsql/.snowsql/config
+```
+
 ### Upload XML Data Files (to internal stage)
 ```
-# Connect with CLI
-snowsql --dbname CADORS --config $env:USERPROFILE\.snowsql\config
 # https://docs.snowflake.com/en/sql-reference/sql/put.html
-PUT $$file://C:\Users\cory\OneDrive - Force 1024\Attachments\cadors_xml\*.xml$$ @"PUBLIC"."STAGE_CADORS_XML"; 
+PUT $$file://<source_to_raw_cadors_xml>\*.xml$$ @"PUBLIC"."STAGE_CADORS_XML"; 
 !exit
 ```
